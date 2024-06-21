@@ -1,0 +1,159 @@
+<nav class="navbar navbar-light bg-primary">
+  <div class="container-fluid">
+    <h1 style="color: aliceblue">Angular Crud</h1>
+    <div class="b-flex">
+      <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addModal">
+        Add Employee
+      </button>
+    </div>
+  </div>
+</nav>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Employee ID</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Email ID</th>
+      <th>Mobile Number</th>
+      <th>Salary</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let emp of employees">
+      <td>{{ emp.id }}</td>
+      <td>{{ emp.firstName }}</td>
+      <td>{{ emp.lastName }}</td>
+      <td>{{ emp.email }}</td>
+      <td>{{ emp.mobilenumber }}</td>
+      <td>{{ emp.salary }}</td>
+      <td>
+        <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editModal" (click)="onEdit(emp)">Edit</button>
+        <button class="btn btn-danger mx-3" (click)="onDelete(emp.id)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Modal for Add Employee -->
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="addModalLabel">Add Employee</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+          <div class="mb-3">
+            <label for="firstName" class="form-label">First Name</label>
+            <input type="text" formControlName="firstName" class="form-control" id="firstName" required>
+            <div *ngIf="submitted && f['firstName'].errors" class="text-danger">
+              <div *ngIf="f['firstName'].errors['required']">First name is required</div>
+              <div *ngIf="f['firstName'].errors['minlength']">First name must be at least 2 characters</div>
+              <div *ngIf="f['firstName'].errors['pattern']">First name can only contain letters</div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="lastName" class="form-label">Last Name</label>
+            <input type="text" formControlName="lastName" class="form-control" id="lastName" required>
+            <div *ngIf="submitted && f['lastName'].errors" class="text-danger">
+              <div *ngIf="f['lastName'].errors['required']">Last name is required</div>
+              <div *ngIf="f['lastName'].errors['minlength']">Last name must be at least 2 characters</div>
+              <div *ngIf="f['lastName'].errors['pattern']">Last name can only contain letters</div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input type="email" formControlName="email" class="form-control" id="email" required>
+            <div *ngIf="submitted && f['email'].errors" class="text-danger">
+              <div *ngIf="f['email'].errors['required']">Email is required</div>
+              <div *ngIf="f['email'].errors['email']">Invalid email</div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="mobilenumber" class="form-label">Mobile Number</label>
+            <input type="text" formControlName="mobilenumber" class="form-control" id="mobilenumber" required>
+            <div *ngIf="submitted && f['mobilenumber'].errors" class="text-danger">
+              <div *ngIf="f['mobilenumber'].errors['required']">Mobile number is required</div>
+              <div *ngIf="f['mobilenumber'].errors['pattern']">Invalid mobile number</div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="salary" class="form-label">Salary</label>
+            <input type="text" formControlName="salary" class="form-control" id="salary" required>
+            <div *ngIf="submitted && f['salary'].errors" class="text-danger">
+              <div *ngIf="f['salary'].errors['required']">Salary is required</div>
+              <div *ngIf="f['salary'].errors['pattern']">Invalid salary</div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for Edit Employee -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="editModalLabel">Edit Employee</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="employeeForm" (ngSubmit)="onEdit(employees)">
+          <div class="mb-3">
+            <label for="firstName" class="form-label">First Name</label>
+            <input type="text" formControlName="firstName" class="form-control" id="firstName" required>
+          </div>
+          <div class="mb-3">
+            <label for="lastName" class="form-label">Last Name</label>
+            <input type="text" formControlName="lastName" class="form-control" id="lastName" required>
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input type="email" formControlName="email" class="form-control" id="email" required>
+          </div>
+          <div class="mb-3">
+            <label for="mobilenumber" class="form-label">Mobile Number</label>
+            <input type="text" formControlName="mobilenumber" class="form-control" id="mobilenumber" required>
+          </div>
+          <div class="mb-3">
+            <label for="salary" class="form-label">Salary</label>
+            <input type="text" formControlName="salary" class="form-control" id="salary" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div> 
+
+<!-- Modal for Delete Employee -->
+<!-- <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="deleteModalLabel">Delete Employee</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete this employee?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" (click)="deleteEmployee()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div> -->
